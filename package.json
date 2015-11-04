@@ -1,0 +1,24 @@
+{
+  "name": "named-js-regexp",
+  "version": "0.0.9",
+  "description": "Handling named groups with JavaScrip regexp",
+  "main": "lib/named-js-regexp.js",
+  "scripts": {
+    "test": "mocha ./test"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "keywords": [
+    "named",
+    "regexp",
+    "capture",
+    "group",
+    "regular",
+    "expression"
+  ],
+  "devDependencies": {
+    "chai": "^3.4.0",
+    "mocha": "^2.3.3"
+  }
+}
