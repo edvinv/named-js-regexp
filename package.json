@@ -1,12 +1,16 @@
 {
   "name": "named-js-regexp",
   "version": "0.0.9",
-  "description": "Handling named groups with JavaScrip regexp",
+  "description": "Extends JavaScript RegExp with named groups.",
   "main": "lib/named-js-regexp.js",
   "scripts": {
     "test": "mocha ./test"
   },
-  "author": "",
+  "author": "edvinv",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edvinv/named-js-regexp.git"
+  },
   "license": "MIT",
   "dependencies": {},
   "keywords": [
