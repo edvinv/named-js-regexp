@@ -1,5 +1,7 @@
 var namedRegexp = require("./lib/named-js-regexp");
 
+var x=namedRegexp("\\((?<foo>\\d\\d)");
+
 var re = namedRegexp("(?<x>\\d)(?<y>\\w)", "g");
 var r = re.exec("1a2b");
 var g = r.groups;
