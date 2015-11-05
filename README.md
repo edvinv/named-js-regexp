@@ -47,6 +47,16 @@ matches[re.groupsIndices["hours"]];     // => "1"
 matches[re.groupsIndices["seconds"]];   // => undefined
 ```
 
+## Using with successive matches
+```javascript
+var namedRegexp = require("named-js-regexp");
+
+var re = namedRegexp("(?<x>\\d)(?<y>\\w)", "g");
+var r = re.exec("1a2b");
+r.groups;   // => { x: '1', y: 'a' }
+r = re.exec("1a2b");
+r.groups;   // => { x: '2', y: 'b' }
+```
 
 ## API
 `regexp=require("named-js-regexp")(expression:string)`  
@@ -62,7 +72,7 @@ Performs search for the matches and returns null if no match was found or name/v
 `regexp.groupsIndices`  
 Returns name/value mapper where name is group name and value is index that can be used to access matched value by index. 
 
-#### matched (returned by exec)
+#### matched (returned by regexp.exec)
 
 `matched.groups`  
 Name/value dictionary, where name is group name and value is matched value.

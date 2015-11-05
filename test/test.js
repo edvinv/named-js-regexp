@@ -47,6 +47,12 @@ describe("NamedRegExp should bahave just like normal RegExp", function () {
 	it("with exec function", function () { expect(result[3]).to.be.equal("3"); });
 });
 
+describe("Successive matched", function () {
+	var regex = namedRegexp("(?<x>\\d)(?<y>\\w)", "g");
+	it("for first match.", function () { expect(regex.exec("1a2b").groups).to.be.deep.equal({ x: "1", y: "a" });});
+	it("for second match.", function () { expect(regex.exec("1a2b").groups).to.be.deep.equal({ x: "2", y: "b" });});
+});
+
 describe("Groups with duplicated name", function () {
 	var regex = namedRegexp("^(?<first>\\d)(?<first>\\d)$");
 	it("should return last group value.", function () { expect(regex.execGroups("12").first).to.be.equal("2"); });
