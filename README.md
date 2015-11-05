@@ -3,8 +3,8 @@
 #named-js-regexp
 
 
-Extends JavaScript RegExp with named groups. Regular expression text 
-with named groups is converted to JavaScript RegeExp so you will get the same speed, 
+Extends JavaScript RegExp with named groups. Regular expressions 
+with named groups are converted to normal JavaScript RegeExp so you will get the same speed, 
 except for initial parsing.
 
 Syntax for named groups: `(?<name>expression)`
@@ -59,8 +59,8 @@ r.groups;   // => { x: '2', y: 'b' }
 ```
 
 ## API
-`regexp=require("named-js-regexp")(expression:string)`  
-returns normal JavaScript RegExp object with some additional properties:
+`regexp=require("named-js-regexp")(expression:string, options?:string)`  
+returns normal JavaScript RegExp object with some additional properties.
 
 #### regexp
 `regexp.exec(expression:string)`  

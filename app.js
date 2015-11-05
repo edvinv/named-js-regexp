@@ -1,17 +1,8 @@
 var namedRegexp = require("./lib/named-js-regexp");
 
-var x=namedRegexp("\\((?<foo>\\d\\d)");
-
-var re = namedRegexp("(?<x>\\d)(?<y>\\w)", "g");
-var r = re.exec("1a2b");
-var g = r.groups;
-console.dir(g);
-r = re.exec("1a2b");
-g = r.groups;
-console.dir(g);
-r = re.exec("1a2b");
-g = r.groups;
-console.dir(g);
+var regexp=require("./lib/named-js-regexp")("\aA", "i");
+var a=regexp.test("aa");
+a=regexp.test("aA");
 
 
 
