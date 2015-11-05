@@ -1,5 +1,3 @@
-# IN PROGRESS (NOT PUBLISHED!)
-
 #named-js-regexp
 
 
