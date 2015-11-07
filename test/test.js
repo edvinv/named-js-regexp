@@ -12,8 +12,8 @@ describe("Result from exec() must be", function () {
 	var regex = namedRegexp("(?<hours>\\d\\d?):(?<minutes>\\d\\d?):(?<seconds>\\d\\d?)");
 	var result = regex.exec("1:2:33");
 	it("valid Array.", function () { expect(result).to.be.an("array"); });
-	it("have group(name) function.", function () { expect(result.group).to.be.a("function"); });
-	it("have groups property.", function () { expect(result.groups).to.be.an("object"); });
+	it("have group(name,all) function.", function () { expect(result.group).to.be.a("function"); });
+	it("have groups(all) function.", function () { expect(result.groups).to.be.a("function"); });
 });
 
 describe("Check", function () {
@@ -30,8 +30,10 @@ describe("Check", function () {
 
 describe("Using regexp with exec function", function () {
 	var regex = namedRegexp("(?<hours>\\d\\d?):(?<minutes>\\d\\d?):(?<seconds>\\d\\d?)");
-	var result = regex.exec("1:2:33").groups;
-	it("check result.", function () { expect(result).to.be.deep.equal({ hours: "1", minutes: "2", seconds: "33" }); });
+	var result = regex.exec("1:2:33");
+	it("check groups() result.", function () { expect(result.groups()).to.be.deep.equal({ hours: "1", minutes: "2", seconds: "33" }); });
+	it("check group() with valid group name.", function () { expect(result.group("hours")).to.be.equal("1"); });
+	it("check group() with invalide group name.", function () { expect(result.group("hours1")).to.be.undefined; });
 });
 
 describe("Using regexp with execGroups function", function () {
@@ -59,15 +61,41 @@ describe("NamedRegExp should bahave just like normal RegExp", function () {
 	it("with exec function", function () { expect(result[3]).to.be.equal("3"); });
 });
 
-describe("Successive matched", function () {
-	var regex = namedRegexp("(?<x>\\d)(?<y>\\w)", "g");
-	it("for first match.", function () { expect(regex.exec("1a2b").groups).to.be.deep.equal({ x: "1", y: "a" }); });
-	it("for second match.", function () { expect(regex.exec("1a2b").groups).to.be.deep.equal({ x: "2", y: "b" }); });
+describe("Group names duplication", function () {
+	var regex0 = namedRegexp("^(?<first>\\d)(?<second>\\d)((?<first>\\d)(?<first>\\d))$");
+	it("should return array of indices for duplicated group name .", function () { expect(regex0.groupsIndices).to.be.deep.equal({ first: [1, 4, 5], second: 2 }); });
+
+	var regex1 = namedRegexp("^(?<first>\\d)(?<first>\\d)$");
+	var res1 = regex1.exec("12");
+	it("should return first group value.", function () { expect(res1.groups().first).to.be.equal("1"); });
+	it("second call should return first group value from cache.", function () { expect(res1.groups().first).to.be.equal("1"); });
+	it("should return array if all is set to true.", function () { expect(res1.groups(true).first).to.be.deep.equal(["1", "2"]); });
+	it("second call should should return array if all is set to true from cache.", function () { expect(res1.groups(true).first).to.be.deep.equal(["1", "2"]); });
+
+	var regex2 = namedRegexp("(?<digit>((?<a>\\d):(?<b>\\d)))|(?<char>((?<a>\\w):(?<b>\\w)))");
+	var res21 = regex2.exec("a:b");
+	it("with nested named groups.", function () { expect(res21.groups()).to.be.deep.equal({ a: "a", b: "b", digit: undefined, char: "a:b" }); });
+	it("with nested named groups (from cache).", function () { expect(res21.groups()).to.be.deep.equal({ a: "a", b: "b", digit: undefined, char: "a:b" }); });
+	it("with nested named groups.", function () { expect(regex2.execGroups("1:2")).to.be.deep.equal({ a: "1", b: "2", digit: "1:2", char: undefined }); });
+	it("with nested named groups (from cache).", function () { expect(regex2.execGroups("1:2")).to.be.deep.equal({ a: "1", b: "2", digit: "1:2", char: undefined }); });
+
+	it("with nested named groups.", function () { expect(res21.groups(true)).to.be.deep.equal({ a: [undefined, "a"], b: [undefined, "b"], digit: undefined, char: "a:b" }); });
+	it("with nested named groups (from cache).", function () { expect(res21.groups(true)).to.be.deep.equal({ a: [undefined, "a"], b: [undefined, "b"], digit: undefined, char: "a:b" }); });
+	it("with nested named groups.", function () { expect(regex2.execGroups("1:2", true)).to.be.deep.equal({ a: ["1", undefined], b: ["2", undefined], digit: "1:2", char: undefined }); });
+	it("with nested named groups (from cache).", function () { expect(regex2.execGroups("1:2", true)).to.be.deep.equal({ a: ["1", undefined], b: ["2", undefined], digit: "1:2", char: undefined }); });
+
+	it("with group(name,all).", function () { expect(res21.group("a")).to.be.equal("a"); });
+	it("with group(name,all).", function () { expect(res21.group("a", true)).to.be.deep.equal([undefined, "a"]); });
+	it("with group(name,all).", function () { expect(res21.group("char")).to.be.deep.equal("a:b"); });
+	it("with group(name,all).", function () { expect(res21.group("char", true)).to.be.deep.equal("a:b"); });
 });
 
-describe("Groups with duplicated name", function () {
-	var regex = namedRegexp("^(?<first>\\d)(?<first>\\d)$");
-	it("should return last group value.", function () { expect(regex.execGroups("12").first).to.be.equal("2"); });
+
+describe("Successive matched", function () {
+	var regex = namedRegexp("(?<x>\\d)(?<y>\\w)", "g");
+	it("for first match.", function () { expect(regex.exec("1a2b").groups()).to.be.deep.equal({ x: "1", y: "a" }); });
+	it("for second match.", function () { expect(regex.exec("1a2b").groups()).to.be.deep.equal({ x: "2", y: "b" }); });
+	it("and null for last.", function () { expect(regex.exec("1a2b")).to.be.null; });
 });
 
 
