@@ -27,6 +27,12 @@ describe("Check", function () {
 	it("url parsing.", function () { expect(urlParts).to.be.deep.equal({ schema: "https", domain: "www.google.com", path: "/some/path/", file: "search.html", query: "?a=0&b=1" }); });
 });
 
+describe("User group name ", function () {
+	it("should start with ':$_a-zA-Z' .", function () { expect(function () { namedRegexp("(?<$>.)"); namedRegexp("(?<$>.)"); namedRegexp("(?<A>.)"); namedRegexp("(?<A>.)"); }).to.not.throw(); });
+	it("should not star with '.' .", function () { expect(function () { namedRegexp("(?<.>.)"); }).to.throw(/Invalide group name/); });
+	it("should not star with '1' .", function () { expect(function () { namedRegexp("(?<1>.)"); }).to.throw(/Invalide group name/); });
+	it("should not be empty '1' .", function () { expect(function () { namedRegexp("(?<>.)"); }).to.throw(/Invalide group name/); });
+});
 
 describe("Using regexp with exec function", function () {
 	var regex = namedRegexp("(?<hours>\\d\\d?):(?<minutes>\\d\\d?):(?<seconds>\\d\\d?)");

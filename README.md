@@ -5,8 +5,7 @@ Extends JavaScript RegExp with named groups. Regular expressions
 with named groups are converted to normal JavaScript RegeExp so you will get the same speed, 
 except for initial parsing.
 
-Syntax for named groups: `(?<name>expression)`
-
+Syntax for named groups: `(?<name>expression)`  
   
 ## Install
 
@@ -101,6 +100,10 @@ for info about parameter all.
 `matched.group(name:string, all?:boolean)`  
 Returns named group value or undefined if named group was not found. Check regexp.execGroups 
 for info about parameter all.  
+
+
+## NOTES
+Group name should start with '_$a-zA-Z' and can contain only '_$a-zA-Z0-9'. 
 
 
 ## LICENCE
