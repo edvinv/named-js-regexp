@@ -103,7 +103,7 @@ for info about parameter all.
 
 
 ## NOTES
-Group name should start with '_$a-zA-Z' and can contain only '_$a-zA-Z0-9'. 
+Group name should start with '\_$a-zA-Z' and can contain only '\_$a-zA-Z0-9'. 
 
 
 ## LICENCE
