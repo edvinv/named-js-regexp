@@ -20,6 +20,7 @@ describe("Check", function () {
 	it("that invalide expression throws an error.", function () { expect(function () { namedRegexp("?") }).to.throw(Error); });
 	it("that missing end '>' throws an error.", function () { expect(function () { namedRegexp("(?<hours<abc)") }).to.throw(/missing in named group/); });
 	it("that '\)' is correctly escaped.", function () { expect(namedRegexp("\\((?<foo>\\d\\d)").execGroups("(12").foo).to.be.equal("12"); });
+	it("'\\' escaping.", function () { expect(namedRegexp("\\(\\\\\\\\(\\\\(?<foo>\\d+))").execGroups("(\\\\\\1456u").foo).to.be.equal("1456"); });
 	it("that non-capturing parentheses '(?:)' works ok.", function () { expect(namedRegexp("(?:\\((?<foo>\\d\\d))").execGroups("(12").foo).to.be.equal("12"); });
 	it("that matched expression with no named groups returns groups={}.", function () { expect(namedRegexp("(\\d\\d)|(\\w)").execGroups("a")).to.be.deep.equal({}); });
 	it("deep expression nesting.", function () { expect(namedRegexp("(?:((((((?:(?<a>\\d\\d\\d)))-((?<b>\\d\\d))))-((((?<c>\\d)))))))").execGroups("123-45-6")).to.be.deep.equal({ a: "123", b: "45", c: "6" }); });
@@ -32,7 +33,7 @@ describe("User group name ", function () {
 	it("should start with ':$_a-zA-Z' .", function () { expect(function () { namedRegexp("(?<$>.)"); namedRegexp("(?<$>.)"); namedRegexp("(?<A>.)"); namedRegexp("(?<A>.)"); }).to.not.throw(); });
 	it("should not star with '.' .", function () { expect(function () { namedRegexp("(?<.>.)"); }).to.throw(/Invalide group name/); });
 	it("should not star with '1' .", function () { expect(function () { namedRegexp("(?<1>.)"); }).to.throw(/Invalide group name/); });
-	it("should not be empty '1' .", function () { expect(function () { namedRegexp("(?<>.)"); }).to.throw(/Invalide group name/); });
+	it("should not be empty '' .", function () { expect(function () { namedRegexp("(?<>.)"); }).to.throw(/Invalide group name/); });
 });
 
 describe("Using regexp with exec function", function () {
@@ -40,7 +41,7 @@ describe("Using regexp with exec function", function () {
 	var result = regex.exec("1:2:33");
 	it("check groups() result.", function () { expect(result.groups()).to.be.deep.equal({ hours: "1", minutes: "2", seconds: "33" }); });
 	it("check group() with valid group name.", function () { expect(result.group("hours")).to.be.equal("1"); });
-	it("check group() with invalide group name.", function () { expect(result.group("hours1")).to.be.undefined; });
+	it("check group() with not defined group name.", function () { expect(result.group("hours1")).to.be.undefined; });
 });
 
 describe("Using regexp with execGroups function", function () {
@@ -56,7 +57,7 @@ describe("Using regexp with groupsIndices property", function () {
 	it("check hours.", function () { expect(matches[regex.groupsIndices["hours"]]).to.be.equal("1"); });
 	it("check minutes.", function () { expect(matches[regex.groupsIndices["minutes"]]).to.be.equal("2"); });
 	it("group with unmatched name should be undefined.", function () { expect(matches[regex.groupsIndices["seconds"]]).to.be.undefined; });
-	it("using invalide group name should be undefined.", function () { expect(matches[regex.groupsIndices["foo"]]).to.be.undefined; });
+	it("using not defined group name should be undefined.", function () { expect(matches[regex.groupsIndices["foo"]]).to.be.undefined; });
 });
 
 describe("NamedRegExp should bahave just like normal RegExp", function () {
@@ -91,10 +92,10 @@ describe("Group names duplication", function () {
 	it("with nested named groups.", function () { expect(regex2.execGroups("1:2", true)).to.be.deep.equal({ a: ["1", undefined], b: ["2", undefined], digit: "1:2", char: undefined }); });
 	it("with nested named groups (from cache).", function () { expect(regex2.execGroups("1:2", true)).to.be.deep.equal({ a: ["1", undefined], b: ["2", undefined], digit: "1:2", char: undefined }); });
 
-	it("with group(name,all).", function () { expect(res21.group("a")).to.be.equal("a"); });
-	it("with group(name,all).", function () { expect(res21.group("a", true)).to.be.deep.equal([undefined, "a"]); });
-	it("with group(name,all).", function () { expect(res21.group("char")).to.be.deep.equal("a:b"); });
-	it("with group(name,all).", function () { expect(res21.group("char", true)).to.be.deep.equal("a:b"); });
+	it("with group(name).", function () { expect(res21.group("a")).to.be.equal("a"); });
+	it("with group(name,true).", function () { expect(res21.group("a", true)).to.be.deep.equal([undefined, "a"]); });
+	it("with group(name).", function () { expect(res21.group("char")).to.be.deep.equal("a:b"); });
+	it("with group(name,true).", function () { expect(res21.group("char", true)).to.be.deep.equal("a:b"); });
 });
 
 
@@ -102,7 +103,7 @@ describe("Successive matched", function () {
 	var regex = namedRegexp("(?<x>\\d)(?<y>\\w)", "g");
 	it("for first match.", function () { expect(regex.exec("1a2b").groups()).to.be.deep.equal({ x: "1", y: "a" }); });
 	it("for second match.", function () { expect(regex.exec("1a2b").groups()).to.be.deep.equal({ x: "2", y: "b" }); });
-	it("and null for last.", function () { expect(regex.exec("1a2b")).to.be.null; });
+	it("and null for last one.", function () { expect(regex.exec("1a2b")).to.be.null; });
 });
 
 
