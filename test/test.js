@@ -22,6 +22,8 @@ describe("Check", function () {
 	it("that '\)' is correctly escaped.", function () { expect(namedRegexp("\\((?<foo>\\d\\d)").execGroups("(12").foo).to.be.equal("12"); });
 	it("'\\' escaping.", function () { expect(namedRegexp("\\(\\\\\\\\(\\\\(?<foo>\\d+))").execGroups("(\\\\\\1456u").foo).to.be.equal("1456"); });
 	it("that non-capturing parentheses '(?:)' works ok.", function () { expect(namedRegexp("(?:\\((?<foo>\\d\\d))").execGroups("(12").foo).to.be.equal("12"); });
+	it("that positive lookahead '(?=)' is not captured.", function () { expect(namedRegexp("(?<_>f(?=oo))oo(?<$>\\d\\d)").execGroups("(foo12")).to.be.deep.equal({ _: "f", $: "12" }); });
+	it("that negative lookahead '(?!)' is not captured.", function () { expect(namedRegexp("((?<_>f(?!(oo)))oA(?<$>\\d\\d))(?=x)").execGroups("(foA12x")).to.be.deep.equal({ _: "f", $: "12" }); });
 	it("that matched expression with no named groups returns groups={}.", function () { expect(namedRegexp("(\\d\\d)|(\\w)").execGroups("a")).to.be.deep.equal({}); });
 	it("deep expression nesting.", function () { expect(namedRegexp("(?:((((((?:(?<a>\\d\\d\\d)))-((?<b>\\d\\d))))-((((?<c>\\d)))))))").execGroups("123-45-6")).to.be.deep.equal({ a: "123", b: "45", c: "6" }); });
 	var urlRegexp = namedRegexp("^((?<schema>http[s]?|ftp):\\\/)?\\\/?(?<domain>[^:\\\/\\s]+)(?<path>(\\\/\\w+)*\\\/)(?<file>[\\w\\-\\.]+[^#?\\s]+)(?<query>.*)?$");
