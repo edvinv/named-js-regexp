@@ -108,4 +108,13 @@ describe("Successive matched", function () {
 	it("and null for last one.", function () { expect(regex.exec("1a2b")).to.be.null; });
 });
 
+describe("Named backreference", function () {
+	var regex1 = namedRegexp("(?<digit>\\d)\\k<digit>");
+	it("simple test 1.", function () { expect(regex1.exec("a21b33h")[0]).to.be.equal("33"); });
+	var regex2 = namedRegexp("(((<(?<elem>\\w+)>).*<\/\\k<elem>>))");
+	it("simple test 2.", function () { expect(regex2.exec("<div>hi</div>").groups()).to.be.deep.equal({ elem: "div" }); });
+	it("to undefined group name, should throw exception.", function () { expect(function () { namedRegexp("<(?<elem>\\w+)>.*<\/\\k<elem1>>") }).to.throw(/.*not defined in backreference.*/); });
+	it("to group defined after backreference, should throw exception.", function () { expect(function () { namedRegexp("\\k<digit>(?<digit>\\d)") }).to.throw(/.*not defined in backreference.*/); });
+	it("to duplicated group name, should throw exception.", function () { expect(function () { namedRegexp("(?<elem>\\w+)<(?<elem>\\w+)>.*<\/\\k<elem>>") }).to.throw(/.*Named backreference referencing duplicate named group*/); });
+});
 
