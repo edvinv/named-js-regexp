@@ -1,6 +1,6 @@
 {
   "name": "named-js-regexp",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Extends JavaScript RegExp with named groups and named backreferences.",
   "main": "lib/named-js-regexp.js",
   "scripts": {

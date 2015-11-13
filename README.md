@@ -1,18 +1,18 @@
-#named-js-regexp
+## named-js-regexp  
 Extends JavaScript RegExp with named groups and named backreferences. 
 Both are converted to normal JavaScript RegeExp so you will get the same speed, 
 except for initial parsing.
 
-##Syntax
+### Syntax
 Named group: `(?<name>expression)`  
 Named backreference: `\k<name>`  
   
-## Install
+### Install
 ```sh
 npm install named-js-regexp --save
 ```
 
-## Using with regexp.execGroups
+### Using with regexp.execGroups
 ```javascript
 var namedRegexp = require("named-js-regexp");
 
@@ -21,7 +21,7 @@ re.execGroups("1:2:33");    // => { hours:"1", minutes:"2", seconds:"33" }
 re.execGroups("1");         // => null
 ```
 
-## Using with regexp.exec
+### Using with regexp.exec
 ```javascript
 var namedRegexp = require("named-js-regexp");
 
@@ -32,7 +32,7 @@ result.group("minutes");    // => "2"
 result.group("seconds");    // => undefined
 ```
 
-## Using with regexp.groupsIndices
+### Using with regexp.groupsIndices
 ```javascript
 var namedRegexp = require("named-js-regexp");
 
@@ -42,7 +42,7 @@ matches[re.groupsIndices["hours"]];     // => "1"
 matches[re.groupsIndices["seconds"]];   // => undefined
 ```
 
-## Using named backreferences
+### Using named backreferences
 ```javascript
 var namedRegexp = require("named-js-regexp");
 
@@ -51,7 +51,7 @@ var result=re.exec("<div>hi</div>");
 result.groups();            // => { elem: "div" }
 ```
 
-## Handling group name duplication
+### Handling group name duplication
 ```javascript
 var namedRegexp = require("named-js-regexp");
 
@@ -66,7 +66,7 @@ r.groups();          // => { a: "1", b: "2", digit: "1:2", char: undefined }
 r.groups(true);      // => { a: ["1", undefined], b: ["2", undefined], digit: "1:2", char: undefined }
 ```
 
-## Using with successive matches
+### Using with successive matches
 ```javascript
 var namedRegexp = require("named-js-regexp");
 
@@ -78,11 +78,11 @@ r.groups();              // => { x: '2', y: 'b' }
 r = re.exec("1a2b");     // => null
 ```
 
-## API
+### API
 `regexp=require("named-js-regexp")(expression:string, flags?:string)`  
 Returns normal JavaScript RegExp object with some additional properties.
 
-#### regexp
+##### regexp
 `regexp.exec(expression:string)`  
 Performs search for the matches and returns null if no match was found or matched (Array) result.
 
@@ -97,7 +97,7 @@ Returns name/value mapper where name is group name and value is index that can b
 If same group name was defined multiple times then value is array of all matched indices ordered from left to right as defined in
 regular expression. 
 
-#### matched (returned by regexp.exec)
+##### matched (returned by regexp.exec)
 `matched.groups(all?:boolean)`  
 Returns name/value dictionary, where name is group name and value is matched value. Check regexp.execGroups 
 for info about parameter all.    
@@ -106,9 +106,9 @@ for info about parameter all.
 Returns named group value or undefined if named group was not found. Check regexp.execGroups 
 for info about parameter all.  
 
-## NOTES
+### NOTES
 - Group name should start with '\_$a-zA-Z' and can contain only '\_$a-zA-Z0-9'.
 - Backreference should point to already defined named group, otherwise error is thrown. 
 
-## LICENCE
+### LICENCE
 MIT
