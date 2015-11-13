@@ -1,15 +1,13 @@
 #named-js-regexp
-
-
 Extends JavaScript RegExp with named groups and named backreferences. 
 Both are converted to normal JavaScript RegeExp so you will get the same speed, 
 except for initial parsing.
 
-Syntax for named groups: `(?<name>expression)`  
-Syntax for named backreferences: `\k<name>`  
+##Syntax
+Named group: `(?<name>expression)`  
+Named backreference: `\k<name>`  
   
 ## Install
-
 ```sh
 npm install named-js-regexp --save
 ```
@@ -21,7 +19,6 @@ var namedRegexp = require("named-js-regexp");
 var re=namedRegexp("(?<hours>\\d\\d?):(?<minutes>\\d\\d?)(:(?<seconds>\\d\\d?))?");
 re.execGroups("1:2:33");    // => { hours:"1", minutes:"2", seconds:"33" }
 re.execGroups("1");         // => null
-
 ```
 
 ## Using with regexp.exec
@@ -69,7 +66,6 @@ r.groups();          // => { a: "1", b: "2", digit: "1:2", char: undefined }
 r.groups(true);      // => { a: ["1", undefined], b: ["2", undefined], digit: "1:2", char: undefined }
 ```
 
-
 ## Using with successive matches
 ```javascript
 var namedRegexp = require("named-js-regexp");
@@ -102,7 +98,6 @@ If same group name was defined multiple times then value is array of all matched
 regular expression. 
 
 #### matched (returned by regexp.exec)
-
 `matched.groups(all?:boolean)`  
 Returns name/value dictionary, where name is group name and value is matched value. Check regexp.execGroups 
 for info about parameter all.    
@@ -111,11 +106,9 @@ for info about parameter all.
 Returns named group value or undefined if named group was not found. Check regexp.execGroups 
 for info about parameter all.  
 
-
 ## NOTES
 - Group name should start with '\_$a-zA-Z' and can contain only '\_$a-zA-Z0-9'.
 - Backreference should point to already defined named group, otherwise error is thrown. 
-
 
 ## LICENCE
 MIT
