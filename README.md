@@ -1,11 +1,12 @@
 #named-js-regexp
 
 
-Extends JavaScript RegExp with named groups. Regular expressions 
-with named groups are converted to normal JavaScript RegeExp so you will get the same speed, 
+Extends JavaScript RegExp with named groups and named backreferences. 
+Both are converted to normal JavaScript RegeExp so you will get the same speed, 
 except for initial parsing.
 
 Syntax for named groups: `(?<name>expression)`  
+Syntax for named backreferences: `\k<name>`  
   
 ## Install
 
@@ -42,6 +43,15 @@ var re = namedRegexp("(?<hours>\\d\\d?):(?<minutes>\\d\\d?)(:(?<seconds>\\d\\d?)
 var matches = "1:2".match(re);
 matches[re.groupsIndices["hours"]];     // => "1"
 matches[re.groupsIndices["seconds"]];   // => undefined
+```
+
+## Using named backreferences
+```javascript
+var namedRegexp = require("named-js-regexp");
+
+var re=namedRegexp("(<(?<elem>\\w+)>).*<\/\\k<elem>>");
+var result=re.exec("<div>hi</div>");
+result.groups();            // => { elem: "div" }
 ```
 
 ## Handling group name duplication
@@ -103,7 +113,8 @@ for info about parameter all.
 
 
 ## NOTES
-Group name should start with '\_$a-zA-Z' and can contain only '\_$a-zA-Z0-9'. 
+- Group name should start with '\_$a-zA-Z' and can contain only '\_$a-zA-Z0-9'.
+- Backreference should point to already defined named group, otherwise error is thrown. 
 
 
 ## LICENCE
