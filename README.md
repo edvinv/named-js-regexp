@@ -1,6 +1,6 @@
 ## named-js-regexp  
 Extends JavaScript RegExp with named groups and named backreferences. 
-Both are converted to normal JavaScript RegeExp so you will get the same speed, 
+Both are converted to normal JavaScript RegExp so you will get the same speed, 
 except for initial parsing.
 
 ### Syntax
