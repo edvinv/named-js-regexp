@@ -6,6 +6,8 @@ except for initial parsing.
 ### Syntax
 Named group: `(?<name>expression)`  
 Named backreference: `\k<name>`  
+Named group in replacement text:  `${name}`
+  
   
 ### Install
 ```sh
