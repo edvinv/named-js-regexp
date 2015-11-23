@@ -129,5 +129,8 @@ describe("Named replacement with replacement string", function () {
 
 	var regex2 = namedRegexp("(?<h>\\d+):(?<h>\\d+):(?<s>\\d+)");
 	it("to duplicated group name, should throw exception.", function () { expect(function(){regex2.replace('1:23:44', '${h}hour(s) ${m}minute(s) ${s}second(s)')}).to.throw(/.*Named replacement referencing duplicate named group.*/); });
+
+	it("check '$' escaping.", function () { expect(regex1.replace('1:23:44', '$$${h}hour(s) ${m}minute(s) ${s}second(s)$')).to.be.equal("$1hour(s) 23minute(s) 44second(s)$"); });
 	
 });
+

@@ -1,5 +1,5 @@
 ## named-js-regexp  
-Extends JavaScript RegExp with named groups and named backreferences. 
+Extends JavaScript RegExp with named groups, backreferences and replacement. 
 Both are converted to normal JavaScript RegExp so you will get the same speed, 
 except for initial parsing.
 
@@ -97,8 +97,8 @@ parameter all is false (default) then first (from left to right) not undefined v
 If parameter all is true then returned value is array of all matched values.     
 
 `regexp.replace(text:string, replacement:string|function)`  
-Works as String.prototype.replace. If parameter replacement is string you can also use named backreferences like `${name}`.
-If replacement is function it receives same parameters as they are defined in String.prototype.replace but `this` is set to matched 
+Works as String.prototype.replace. If parameter replacement is string you can also use named replace like `${name}` instead of `$1`.
+If replacement is function it receives same parameters as String.prototype.replace callback, but `this` is set to matched 
 object, similar to one returned by exec.  
 
 `regexp.groupsIndices`  
