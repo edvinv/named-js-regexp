@@ -25,8 +25,6 @@ re.execGroups("1");         // => null
 
 ### Using with regexp.exec
 ```javascript
-var namedRegexp = require("named-js-regexp");
-
 var re=namedRegexp("(?<hours>\\d\\d?):(?<minutes>\\d\\d?)(:(?<seconds>\\d\\d?))?");
 var result=re.exec("1:2");
 result.groups();            // => { hours:"1", minutes:"2", seconds:undefined }
@@ -34,29 +32,35 @@ result.group("minutes");    // => "2"
 result.group("seconds");    // => undefined
 ```
 
+### Using named backreferences
+```javascript
+var re=namedRegexp("(<(?<elem>\\w+)>).*<\/\\k<elem>>");
+var result=re.exec("<div>hi</div>");
+result.groups();            // => { elem: "div" }
+```
+
+### Using named replacement
+```javascript
+var re = namedRegexp("(?<h>\\d+):(?<m>\\d+):(?<s>\\d+)");
+re.replace('1:23:44', '${h}hour(s) ${m}minute(s) ${s}second(s)');
+// => 1hour(s) 23minute(s) 44second(s)
+re.replace('1:23:44', function () {
+	var g = this.groups();
+	return g.h + 'hour' + (g.h > 1 ? 's ' : ' ')+ g.m + 'minute' + (g.m > 1 ? 's ' : ' ')+ g.s + 'second' + (g.s > 1 ? 's' : '');
+});
+// => 1hour 23minutes 44seconds
+```
+
 ### Using with regexp.groupsIndices
 ```javascript
-var namedRegexp = require("named-js-regexp");
-
 var re = namedRegexp("(?<hours>\\d\\d?):(?<minutes>\\d\\d?)(:(?<seconds>\\d\\d?))?");
 var matches = "1:2".match(re);
 matches[re.groupsIndices["hours"]];     // => "1"
 matches[re.groupsIndices["seconds"]];   // => undefined
 ```
 
-### Using named backreferences
-```javascript
-var namedRegexp = require("named-js-regexp");
-
-var re=namedRegexp("(<(?<elem>\\w+)>).*<\/\\k<elem>>");
-var result=re.exec("<div>hi</div>");
-result.groups();            // => { elem: "div" }
-```
-
 ### Handling group name duplication
 ```javascript
-var namedRegexp = require("named-js-regexp");
-
 var re = namedRegexp("(?<digit>((?<a>\\d):(?<b>\\d)))|(?<char>((?<a>\\w):(?<b>\\w)))");
 re.groupsIndices;    // => { digit: 1, a: [ 3, 7 ], b: [ 4, 8 ], char: 5 }
 
@@ -70,8 +74,6 @@ r.groups(true);      // => { a: ["1", undefined], b: ["2", undefined], digit: "1
 
 ### Using with successive matches
 ```javascript
-var namedRegexp = require("named-js-regexp");
-
 var re = namedRegexp("(?<x>\\d)(?<y>\\w)", "g");
 var r = re.exec("1a2b");
 r.groups();              // => { x: '1', y: 'a' }
@@ -93,6 +95,11 @@ Performs search for the matches and returns null if no match was found or name/v
 where name is group name and value is matched value. If same group name was defined multiple times and 
 parameter all is false (default) then first (from left to right) not undefined value is returned. 
 If parameter all is true then returned value is array of all matched values.     
+
+`regexp.replace(text:string, replacement:string|function)`  
+Works as String.prototype.replace. If parameter replacement is string you can also use named backreferences like `${name}`.
+If replacement is function it receives same parameters as they are defined in String.prototype.replace but `this` is set to matched 
+object, similar to one returned by exec.  
 
 `regexp.groupsIndices`  
 Returns name/value mapper where name is group name and value is index that can be used to access matched value by index. 

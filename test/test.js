@@ -118,3 +118,16 @@ describe("Named backreference", function () {
 	it("to duplicated group name, should throw exception.", function () { expect(function () { namedRegexp("(?<elem>\\w+)<(?<elem>\\w+)>.*<\/\\k<elem>>") }).to.throw(/.*Named backreference referencing duplicate named group*/); });
 });
 
+describe("Named replacement with replacement string", function () {
+	var regex1 = namedRegexp("(?<h>\\d+):(?<m>\\d+):(?<s>\\d+)");
+	it("simple test 1.", function () { expect(regex1.replace('1:23:44', '${h}hour(s) ${m}minute(s) ${s}second(s)')).to.be.equal("1hour(s) 23minute(s) 44second(s)"); });
+	it("simple test 2.", function () { expect(regex1.replace('1:23:44', function () {
+		var g = this.groups();
+		return g.h + 'hour' + (g.h > 1 ? 's ' : ' ')+ g.m + 'minute' + (g.m > 1 ? 's ' : ' ')+ g.s + 'second' + (g.s > 1 ? 's' : '');
+	})).to.be.equal("1hour 23minutes 44seconds"); });
+	it("to undefined group name, should throw exception.", function () { expect(function(){regex1.replace('1:23:44', '${h1}hour(s) ${m}minute(s) ${s}second(s)')}).to.throw(/.*is not defined in replacement text.*/); });
+
+	var regex2 = namedRegexp("(?<h>\\d+):(?<h>\\d+):(?<s>\\d+)");
+	it("to duplicated group name, should throw exception.", function () { expect(function(){regex2.replace('1:23:44', '${h}hour(s) ${m}minute(s) ${s}second(s)')}).to.throw(/.*Named replacement referencing duplicate named group.*/); });
+	
+});
