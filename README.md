@@ -117,7 +117,8 @@ for info about parameter all.
 
 ### NOTES
 - Group name should start with '\_$a-zA-Z' and can contain only '\_$a-zA-Z0-9'.
-- Backreference should point to already defined named group, otherwise error is thrown. 
+- Named backreference should refer to already defined named group, otherwise error is thrown.
+- Named backreference and named replacement should not refer to duplicated named group, otherwise error is thrown.  
 
 ### LICENCE
 MIT
