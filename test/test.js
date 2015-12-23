@@ -46,6 +46,18 @@ describe("Using regexp with exec function", function () {
 	it("check group() with not defined group name.", function () { expect(result.group("hours1")).to.be.undefined; });
 });
 
+describe("Using regular expression literal", function () {
+	var regex = namedRegexp(/(:<hours>\d\d?):(:<minutes>\d\d?):(:<seconds>\d\d?)/);
+	var result = regex.exec("1:2:33");
+	it("check groups() result.", function () { expect(result.groups()).to.be.deep.equal({ hours: "1", minutes: "2", seconds: "33" }); });
+	it("check group() with valid group name.", function () { expect(result.group("hours")).to.be.equal("1"); });
+	it("check group() with not defined group name.", function () { expect(result.group("hours1")).to.be.undefined; });
+
+	var regex1 = namedRegexp(new RegExp("(:<hours>\\d\\d?):(:<minutes>\\d\\d?):(:<seconds>\\d\\d?)"));
+	result = regex1.exec("1:2:33");
+	it("check groups() result.", function () { expect(result.groups()).to.be.deep.equal({ hours: "1", minutes: "2", seconds: "33" }); });
+});
+
 describe("Using regexp with execGroups function", function () {
 	var regex = namedRegexp("(?<hours>\\d\\d?):(?<minutes>\\d\\d?)(:(?<seconds>\\d\\d?))?");
 	it("check result", function () { expect(regex.execGroups("1:2:33")).to.be.deep.equal({ hours: "1", minutes: "2", seconds: "33" }); });
