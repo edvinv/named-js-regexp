@@ -3,6 +3,7 @@
 	// List of configurations. Add new configurations or edit existing ones.
 	"configurations": [
 		{
+			"request": "launch",
 			// Name of configuration; appears in the launch configuration drop down menu.
 			"name": "Launch named-regex-groups.js",
 			// Type of configuration.
@@ -27,15 +28,6 @@
 			"sourceMaps": false,
 			// If JavaScript source maps are enabled, the generated code is expected in this directory.
 			"outDir": null
-		},
-		{
-			"name": "Attach",
-			"type": "node",
-			// TCP/IP address. Default is "localhost".
-			"address": "localhost",
-			// Port to attach to.
-			"port": 5858,
-			"sourceMaps": false
 		}
 	]
 }

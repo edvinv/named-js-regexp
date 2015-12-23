@@ -4,7 +4,7 @@ Both are converted to normal JavaScript RegExp so you will get the same speed,
 except for initial parsing.
 
 ### Syntax
-Named group: `(?<name>expression)`  
+Named group: `(?<name>expression)` or `(:<name>expression)`  
 Named backreference: `\k<name>`  
 Named group in replacement text:  `${name}`
   
@@ -18,7 +18,10 @@ npm install named-js-regexp --save
 ```javascript
 var namedRegexp = require("named-js-regexp");
 
-var re=namedRegexp("(?<hours>\\d\\d?):(?<minutes>\\d\\d?)(:(?<seconds>\\d\\d?))?");
+var re=namedRegexp("(?<hours>\\d\\d?):(?<minutes>\\d\\d?)(:(?<seconds>\\d\\d?))?"); 
+// or with regexp literal... NOTE: you must use (:<name>) 
+var re=namedRegexp(/(:<hours>\d\d?):(:<minutes>\d\d?)(:(:<seconds>\d\d?))?/);
+
 re.execGroups("1:2:33");    // => { hours:"1", minutes:"2", seconds:"33" }
 re.execGroups("1");         // => null
 ```
@@ -83,8 +86,10 @@ r = re.exec("1a2b");     // => null
 ```
 
 ### API
-`regexp=require("named-js-regexp")(expression:string, flags?:string)`  
-Returns normal JavaScript RegExp object with some additional properties.
+`var namedRegexp = require("named-js-regexp");`  
+`regexp=namedRegexp(expression:string|RegExp, flags?:string)`  
+Returns normal JavaScript RegExp object with some additional properties. Expression can be string or RegExp object. For
+latest you must use `(:<name>expression)` syntax and flags parameter is ignored. 
 
 ##### regexp
 `regexp.exec(expression:string)`  
