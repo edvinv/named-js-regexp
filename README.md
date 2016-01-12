@@ -1,7 +1,7 @@
 ## named-js-regexp  
 Extends JavaScript RegExp with named groups, backreferences and replacement. 
-Both are converted to normal JavaScript RegExp so you will get the same speed, 
-except for initial parsing.
+All are converted to normal JavaScript RegExp so you will get the same speed 
+except for initial parsing, which can also be eliminated with cache enabled. 
 
 ### Syntax
 Named group: `(?<name>expression)` or `(:<name>expression)`  
@@ -87,9 +87,10 @@ r = re.exec("1a2b");     // => null
 
 ### API
 `var namedRegexp = require("named-js-regexp");`  
-`regexp=namedRegexp(expression:string|RegExp, flags?:string)`  
-Returns normal JavaScript RegExp object with some additional properties. Expression can be string or RegExp object. For
-latest you must use `(:<name>expression)` syntax and flags parameter is ignored. 
+`regexp=namedRegexp(value:string|RegExp|boolean, flags?:string)`  
+Returns normal JavaScript RegExp object with some additional properties. Parameter value can be string expression or RegExp object. For
+latest you must use `(:<name>expression)` syntax and flags parameter is ignored.  
+Set value parameter to true to enable caching or set to false to clear and disable cache.  
 
 ##### regexp
 `regexp.exec(expression:string)`  
