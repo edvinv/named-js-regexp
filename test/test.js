@@ -133,16 +133,23 @@ describe("Named backreference", function () {
 describe("Named replacement with replacement string", function () {
 	var regex1 = namedRegexp("(?<h>\\d+):(?<m>\\d+):(?<s>\\d+)");
 	it("simple test 1.", function () { expect(regex1.replace('1:23:44', '${h}hour(s) ${m}minute(s) ${s}second(s)')).to.be.equal("1hour(s) 23minute(s) 44second(s)"); });
-	it("simple test 2.", function () { expect(regex1.replace('1:23:44', function () {
-		var g = this.groups();
-		return g.h + 'hour' + (g.h > 1 ? 's ' : ' ')+ g.m + 'minute' + (g.m > 1 ? 's ' : ' ')+ g.s + 'second' + (g.s > 1 ? 's' : '');
-	})).to.be.equal("1hour 23minutes 44seconds"); });
-	it("to undefined group name, should throw exception.", function () { expect(function(){regex1.replace('1:23:44', '${h1}hour(s) ${m}minute(s) ${s}second(s)')}).to.throw(/.*is not defined in replacement text.*/); });
+	it("simple test 2.", function () {
+		expect(regex1.replace('1:23:44', function () {
+			var g = this.groups();
+			return g.h + 'hour' + (g.h > 1 ? 's ' : ' ') + g.m + 'minute' + (g.m > 1 ? 's ' : ' ') + g.s + 'second' + (g.s > 1 ? 's' : '');
+		})).to.be.equal("1hour 23minutes 44seconds");
+	});
+	it("to undefined group name, should throw exception.", function () { expect(function () { regex1.replace('1:23:44', '${h1}hour(s) ${m}minute(s) ${s}second(s)') }).to.throw(/.*is not defined in replacement text.*/); });
 
 	var regex2 = namedRegexp("(?<h>\\d+):(?<h>\\d+):(?<s>\\d+)");
-	it("to duplicated group name, should throw exception.", function () { expect(function(){regex2.replace('1:23:44', '${h}hour(s) ${m}minute(s) ${s}second(s)')}).to.throw(/.*Named replacement referencing duplicate named group.*/); });
+	it("to duplicated group name, should throw exception.", function () { expect(function () { regex2.replace('1:23:44', '${h}hour(s) ${m}minute(s) ${s}second(s)') }).to.throw(/.*Named replacement referencing duplicate named group.*/); });
 
 	it("check '$' escaping.", function () { expect(regex1.replace('1:23:44', '$$${h}hour(s) ${m}minute(s) ${s}second(s)$')).to.be.equal("$1hour(s) 23minute(s) 44second(s)$"); });
-	
+
+});
+
+describe("Escape rules inside character sets are not so strict.", function () {
+	var regex1 = namedRegexp("(([(\\[](?<g1>[abc])[\\)\\]]([(\\[](?<g2>[^a-z])[\\)\\]])))");
+	it("This should match", function () { expect(regex1.execGroups('(a)[1]')).to.be.deep.equal({ g1: "a", g2:"1"}); });
 });
 
