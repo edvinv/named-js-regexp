@@ -8,7 +8,7 @@ declare module "named-js-regexp" {
 		exec(expression: string): NamedRegExpExecArray | null;
 		execGroups(expression: string, all?: boolean): object;
 		groupsIndices(): object;
-		replace(text: string, replacement: string | ((this: NamedRegExpExecArray | null, match?, ...params) => string));
+		replace(text: string, replacement: string | ((this: NamedRegExpExecArray | null, match?: any, ...params: any[]) => string)): any;
 	}
 
 	let createNamedRegexp: (pattern: string | RegExp | boolean, flags?: string) => NamedRegExp;
