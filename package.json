@@ -24,7 +24,7 @@
     "expression"
   ],
   "devDependencies": {
-    "chai": "^3.4.0",
-    "mocha": "^2.3.3"
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0"
   }
 }
