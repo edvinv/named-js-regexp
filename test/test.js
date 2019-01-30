@@ -74,7 +74,7 @@ describe("Using regexp with groupsIndices property", function () {
 	it("using not defined group name should be undefined.", function () { expect(matches[regex.groupsIndices["foo"]]).to.be.undefined; });
 });
 
-describe("NamedRegExp should bahave just like normal RegExp", function () {
+describe("NamedRegExp should behave just like normal RegExp", function () {
 	var regex = namedRegexp("^((\\d\\d?):(\\d\\d?))$");
 	it("with test function", function () { expect(regex.test("1:2:33")).to.be.false; });
 	it("with test function", function () { expect(regex.test("1:2")).to.be.true; });
